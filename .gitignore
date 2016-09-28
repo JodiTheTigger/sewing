@@ -31,3 +31,7 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Working Directories
+*.user
+b-*
