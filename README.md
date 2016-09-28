@@ -76,7 +76,7 @@ Support
 ```
     YES     = Tested Working
     c       = Compiles
-    t       = In Theroy. Compile code not written yet
+    t       = In Theory. Compile code not written yet
     <empty> = Not supported
 ```
 
