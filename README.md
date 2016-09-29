@@ -82,10 +82,10 @@ Support
 
 | Arch    | Linux | Windows | MacOS X | iOS |
 | --------| ----- | --------| ------- | --- |
-| arm     | t     | t       |         | t   |
+| arm     | YES   | t       |         | t   |
 | arm_64  | t     |         |         | t   |
-| x86     | t     | t       | t       |     |
-| x86_64  | YES   | t       | t       |     |
+| x86     | YES   | YES     | t       |     |
+| x86_64  | YES   | YES     | t       |     |
 | mips    | t     |         |         |     |
 | ppc     | t     |         | t       |     |
 | ppc_64  | t     |         | t       |     |

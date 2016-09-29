@@ -20,9 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SEW_DEMO_USE_HWLOC
-#define SEW_DEMO_USE_HWLOC 0
-#endif
 
 #include "sewing.h"
 
@@ -38,6 +35,10 @@ SOFTWARE.
 
 #include <inttypes.h>
 // for PRId64
+
+#ifndef SEW_DEMO_USE_HWLOC
+#define SEW_DEMO_USE_HWLOC 0
+#endif
 
 #if SEW_DEMO_USE_HWLOC
 #include <hwloc.h>
@@ -161,7 +162,7 @@ void Sew_Test_Set_hwloc_thread_affinity
 #if __linux__
                                 , threads[threads_left - 1]
 #elif defined(_WIN32)
-								, threads[threads_left - 1].handle
+                                , threads[threads_left - 1].handle
 #else
 #error Platform not supported, sorry.
 #endif
@@ -197,7 +198,7 @@ void Sew_Test_Set_hwloc_thread_affinity
 
 void sew_test_main_bringup_shutdown
 (
-    struct Sewing*           sewing
+      struct Sewing*         sewing
     , Sew_Thread*            threads
     , size_t                 thread_count
     , Sew_Procedure_Argument procedure_argument
@@ -233,33 +234,40 @@ void sew_test_main_10k_empty_jobs
     intptr_t lots_o_jobs_raw = (intptr_t)
         malloc((COUNT_EMPTY_JOBS * sizeof(Sew_Stitch)) + 15);
 
-    Sew_Stitch* lots_o_jobs = (Sew_Stitch*) ((lots_o_jobs_raw + 15) & ~15);
-
-    for (size_t i = 0; i < COUNT_EMPTY_JOBS; i++)
+    if (lots_o_jobs_raw)
     {
-        lots_o_jobs[i].procedure = sew_test_10k_empty_jobs_count;
-        lots_o_jobs[i].argument  = NULL;
-        lots_o_jobs[i].name      = "sew_test_10k_empty_jobs_count";
+        Sew_Stitch* lots_o_jobs = (Sew_Stitch*) ((lots_o_jobs_raw + 15) & ~15);
+
+        for (size_t i = 0; i < COUNT_EMPTY_JOBS; i++)
+        {
+            lots_o_jobs[i].procedure = sew_test_10k_empty_jobs_count;
+            lots_o_jobs[i].argument  = NULL;
+            lots_o_jobs[i].name      = "sew_test_10k_empty_jobs_count";
+        }
+
+        Sew_Time start = sew_test_now();
+
+        for (size_t i = 0; i < COUNT_EMPTY_JOBS; i += (QUEUE_SIZE - 16))
+        {
+            size_t queue_count_raw = i + (QUEUE_SIZE - 16);
+            size_t queue_count =
+                (queue_count_raw <= COUNT_EMPTY_JOBS)
+                ? (size_t) (QUEUE_SIZE - 16)
+                : (size_t) (COUNT_EMPTY_JOBS - i);
+
+            sew_stiches_and_finish(sewing, &lots_o_jobs[i], queue_count);
+        }
+
+        int64_t ns = sew_test_delta(&start);
+
+        printf("%14" PRId64 " ", ns);
+
+        free((void*) lots_o_jobs_raw);
     }
-
-    Sew_Time start = sew_test_now();
-
-    for (size_t i = 0; i < COUNT_EMPTY_JOBS; i += (QUEUE_SIZE - 16))
+    else
     {
-        size_t queue_count_raw = i + (QUEUE_SIZE - 16);
-        size_t queue_count =
-            (queue_count_raw <= COUNT_EMPTY_JOBS)
-            ? (size_t) (QUEUE_SIZE - 16)
-            : (size_t) (COUNT_EMPTY_JOBS - i);
-
-        sew_stiches_and_finish(sewing, &lots_o_jobs[i], queue_count);
+        printf("%14s", "No Mem");
     }
-
-    int64_t ns = sew_test_delta(&start);
-
-    printf("%14" PRId64 " ", ns);
-
-    free((void*) lots_o_jobs_raw);
 }
 
 // -----------------------------------------------------------------------------
@@ -311,11 +319,10 @@ void sew_test_main_dependency_tree
 
     Sew_Time start = sew_test_now();
 
-    Sew_Test_Wait_Tree tree =
-    {
-        sewing
-        , 1
-    };
+    Sew_Test_Wait_Tree tree;
+
+    tree.sewing = sewing;
+    tree.depth  = 1;
 
     sew_test_dependency_tree((Sew_Procedure_Argument) &tree);
 
@@ -447,9 +454,9 @@ int sew_test_validate(uint32_t* b)
         {
             printf
             (
-                  "INVALID at %" PRId64 " (%" PRId64 ")\n"
-                , i
-                , i / COUNT_SORT_CACHE
+                  "INVALID at %u (%u)\n"
+                , (unsigned) i
+                , (unsigned) (i / COUNT_SORT_CACHE)
             );
 
             printf("%u %u %u %u\n", b[i - 1], b[i], b[i + 1], b[i + 2]);
@@ -663,21 +670,21 @@ int main(int argv, char** argc)
     (void) argc;
     (void) argv;
 
-    static const size_t FIBERS = 128;
+    static const size_t FIBERS      = 128;
     static const size_t STACK_BYTES = 1024 * 32;
 
     printf("Sewing with fibers:\n\n");
 
     printf("Sewing with fibers:\n");
-    printf("    %" PRId64 " fibers\n", FIBERS);
-    printf("    %" PRId64 "k stack\n", STACK_BYTES / 1024);
+    printf("    %u fibers\n", (unsigned) FIBERS);
+    printf("    %uk stack\n", (unsigned) (STACK_BYTES / 1024));
     printf("    %uk empty jobs,\n", COUNT_EMPTY_JOBS / 1024);
     printf("    dependency chain empty jobs,\n");
     printf("    setup for sort test,\n");
 
     printf
     (
-        "    parallel insertion sort test (%u groups, %uk items/group).\n\n"
+          "    parallel insertion sort test (%u groups, %uk items/group).\n\n"
         , (unsigned) COUNT_CACHE_GROUPS
         , (unsigned) (COUNT_SORT_CACHE / 1024)
     );

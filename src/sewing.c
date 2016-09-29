@@ -839,7 +839,7 @@ Sew_Thread_Local* sew_next_fiber
         {
             Sew_Fiber* fiber = &sewing->fibers[fiber_index];
 
-            tls->fiber_in_use = fiber_index;
+            tls->fiber_in_use = (uint32_t) fiber_index;
 
             return (Sew_Thread_Local*)
                 sew_context_switch(tls, context, &fiber->context);
@@ -1127,7 +1127,7 @@ size_t sew_it
     {
         size_t sew_bytes = A16(sizeof(Sewing));
 
-        size_t sew_cells_count = 1 << log_2_job_count;
+        size_t sew_cells_count   = 1ull << log_2_job_count;
         size_t sew_cells_bytes   = A16(sizeof(Sew_Mpmc_Cell) * sew_cells_count);
         size_t tls_bytes         = A16(sizeof(Sew_Thread_Local)) * thread_count;
         size_t sew_fibers_bytes  = A16(sizeof(Sew_Fiber) * fiber_count);
@@ -1213,7 +1213,7 @@ size_t sew_it
     (
           &sewing->jobs
         , sewing->cells
-        , 1 << log_2_job_count
+        , 1ull << log_2_job_count
     );
 
     // <= instead of < as I'm adding a guard page at the end as well.
@@ -1253,7 +1253,7 @@ size_t sew_it
     {
         // Setup thread 0
         sewing->tls[0].sewing       = sewing;
-        sewing->tls[0].fiber_in_use = sew_get_free_fiber(sewing);
+        sewing->tls[0].fiber_in_use = (uint32_t) sew_get_free_fiber(sewing);
         sewing->threads[0]          = sew_thread_current();
     }
 

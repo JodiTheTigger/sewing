@@ -41,7 +41,8 @@ typedef struct Sew_Thread
 {
     HANDLE handle;
     DWORD  id;
-} Sew_Thread;
+}
+Sew_Thread;
 
 #else
 
