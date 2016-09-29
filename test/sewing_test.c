@@ -172,7 +172,7 @@ void Sew_Test_Set_hwloc_thread_affinity
                         }
                     }
 
-					hwloc_bitmap_free(cpu);
+                    hwloc_bitmap_free(cpu);
                 }
             }
         }
