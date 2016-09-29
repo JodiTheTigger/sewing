@@ -158,17 +158,12 @@ void Sew_Test_Set_hwloc_thread_affinity
                             !hwloc_set_thread_cpubind
                             (
                                 t
-                                , threads[threads_left - 1]
+                                , threads[threads_left - 1].handle
                                 , cpu
                                 , HWLOC_CPUBIND_THREAD
                             )
                             )
                     {
-                        char *str;
-                        hwloc_bitmap_asprintf(&str, cpu);
-
-                        free(str);
-
                         threads_left--;
 
                         if (!threads_left)
@@ -177,7 +172,7 @@ void Sew_Test_Set_hwloc_thread_affinity
                         }
                     }
 
-                    free(cpu);
+					hwloc_bitmap_free(cpu);
                 }
             }
         }
