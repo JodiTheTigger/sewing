@@ -62,9 +62,9 @@ endif()
 # ------------------------------------------------------------------------------
 
 if (WIN32)
-	enable_language(ASM_MASM)
+    enable_language(ASM_MASM)
 else()
-	enable_language(ASM)
+    enable_language(ASM)
 endif()
 
 # ------------------------------------------------------------------------------
@@ -80,22 +80,6 @@ endif()
 
 # ------------------------------------------------------------------------------
 
-# RAM: DEBUG
-# Test 32/64 bits
-if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
-    message(STATUS "Target is 64 bits")
-    if (WIN32)
-        set(WINXXBITS Win64)
-    endif(WIN32)
-else("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
-    message(STATUS "Target is 32 bits")
-    if (WIN32)
-        set(WINXXBITS Win32)
-    endif(WIN32)
-endif("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
-
-
-# RAM: Broken for windows. building 32 bit on a 64 bit system.
 if (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
     set(sewing_platform "x86_64")
 endif()
@@ -104,16 +88,33 @@ if (CMAKE_SYSTEM_PROCESSOR STREQUAL "AMD64")
     set(sewing_platform "x86_64")
 endif()
 
+if (CMAKE_SYSTEM_PROCESSOR STREQUAL "i386")
+    set(sewing_platform "i386")
+endif()
+
+if (sewing_platform STREQUAL "x86_64")
+    if("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
+        set(sewing_platform "i386")
+    endif()
+endif()
+
 if (CMAKE_SYSTEM_PROCESSOR STREQUAL "arm")
-    set(sewing_platform "arm")
+    if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+        set(sewing_platform "arm64")
+    else()
+        set(sewing_platform "arm")
+    endif()
+
     set(sewing_os  "aapcs")
 endif()
 
 if (WIN32)
-	if (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
-		set(WINXXBITS Win64)
-	endif()
-	
+    if (sewing_platform STREQUAL "x86_64")
+        set(WINXXBITS Win64)
+    else()
+        set(WINXXBITS Win32)
+    endif()
+
     if (NOT sewing_os)
         set(sewing_os  "ms")
     endif()
@@ -139,8 +140,17 @@ endif()
 
 # ------------------------------------------------------------------------------
 
-message("-- Platform processor: ${CMAKE_SYSTEM_PROCESSOR}")
-message("-- Target asm: ${sewing_platform}-${sewing_os}-${sewing_abi}-${sewing_asm}")
+if (WIN32)
+    if (sewing_use_cxx_11)
+        set(CMAKE_EXE_LINKER_FLAGS "/SAFESEH:NO")
+    endif()
+endif()
+
+# ------------------------------------------------------------------------------
+
+message("-- System processor: ${CMAKE_SYSTEM_PROCESSOR}")
+message("-- Target processor: ${sewing_platform}")
+message("-- Target asm      : ${sewing_platform}-${sewing_os}-${sewing_abi}-${sewing_asm}")
 
 # ------------------------------------------------------------------------------
 
@@ -176,7 +186,7 @@ set(SEWING_SOURCE
     include/sewing.h
     src/sewing.c)
 
-# Oh comon cmake, why would you mark a .md file as compilable?	
+# Oh comon cmake, why would you mark a .md file as compilable?
 set_source_files_properties("README.md" PROPERTIES HEADER_FILE_ONLY TRUE)
 
 set_source_files_properties(${SEWING_SOURCE}
@@ -205,7 +215,7 @@ if (sewing_use_valgrind)
 endif()
 
 if (WIN32)
-	add_definitions(-DWIN32_LEAN_AND_MEAN)
+    add_definitions(-DWIN32_LEAN_AND_MEAN)
 endif()
 
 add_definitions(-DSEW_STACK_GUARD=${sewing_guard_page})
