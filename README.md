@@ -94,7 +94,7 @@ Building
 ========
 
 The build system uses CMake for building. This can be used to generate Make,
-Ninja, MSVC or XCode projects easily.
+Ninja, MSVC or Xcode projects easily.
 
 Requirements
 ------------
