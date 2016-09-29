@@ -1,6 +1,10 @@
 # WIP
 # Todo: check cmake, gcc, clangs versions.
 
+# Use Ubuntu 14.04
+sudo: required
+dist: trusty
+
 language: c
 compiler:
   - clang
