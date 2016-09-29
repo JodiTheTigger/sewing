@@ -1,0 +1,14 @@
+# WIP
+# Todo: check cmake, gcc, clangs versions.
+
+language: c
+compiler:
+  - clang
+  - gcc
+
+# RAM: TODO: Ninja builds.
+script:
+  - mkdir build
+  - cd build
+  - cmake ../
+  - make
