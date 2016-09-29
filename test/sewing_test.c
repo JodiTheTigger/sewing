@@ -158,7 +158,13 @@ void Sew_Test_Set_hwloc_thread_affinity
                             !hwloc_set_thread_cpubind
                             (
                                 t
-                                , threads[threads_left - 1].handle
+#if __linux__
+                                , threads[threads_left - 1]
+#elif defined(_WIN32)
+								, threads[threads_left - 1].handle
+#else
+#error Platform not supported, sorry.
+#endif
                                 , cpu
                                 , HWLOC_CPUBIND_THREAD
                             )
