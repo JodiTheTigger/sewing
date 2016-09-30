@@ -5,18 +5,18 @@
 sudo: required
 dist: trusty
 
-addons:
-  apt:
-    sources:
-    # add PPAs with more up-to-date toolchains
-    - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.6
+#addons:
+#  apt:
+#    sources:
+#    # add PPAs with more up-to-date toolchains
+#    - ubuntu-toolchain-r-test
+#    - llvm-toolchain-precise-3.6
 
-    packages:
-    # install toolchains
-    - gcc-5
-    - g++-5
-    - clang-3.6
+#    packages:
+#    # install toolchains
+#    - gcc-5
+#    - g++-5
+#    - clang-3.6
 
 
 language: c
