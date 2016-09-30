@@ -20,9 +20,9 @@ dist: trusty
 
 
 language: c
-compiler:
-  - clang
-  - gcc
+#compiler:
+#  - clang
+#  - gcc
 
 matrix:
   include:
