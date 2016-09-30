@@ -7,11 +7,6 @@ dist: trusty
 
 language: c
 
-addons:
-  apt:
-    packages:
-    - ninja-build
-
 matrix:
   include:
     - compiler: gcc
@@ -21,6 +16,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-5
+            - ninja-build
       env: COMPILER=gcc-5
     - compiler: clang
       addons:
@@ -30,6 +26,7 @@ matrix:
             - llvm-toolchain-precise-3.7
           packages:
             - clang-3.7
+            - ninja-build
       env: COMPILER=clang-3.7
 
 script:
