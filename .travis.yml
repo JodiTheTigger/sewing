@@ -7,6 +7,9 @@ dist: trusty
 
 language: c
 
+# Supporting non-standard gcc/clang taken from
+# http://genbattle.bitbucket.org/blog/2016/01/17/c++-travis-ci/
+
 matrix:
   include:
     - compiler: gcc
