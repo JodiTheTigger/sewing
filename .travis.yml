@@ -7,6 +7,11 @@ dist: trusty
 
 language: c
 
+addons:
+  apt:
+    packages:
+    - ninja-build
+
 matrix:
   include:
     - compiler: gcc
@@ -27,9 +32,8 @@ matrix:
             - clang-3.7
       env: COMPILER=clang-3.7
 
-# RAM: TODO: Ninja builds.
 script:
   - mkdir build
   - cd build
-  - CC=$COMPILER cmake ../
-  - make
+  - CC=$COMPILER cmake ../ -G Ninja
+  - ninja
