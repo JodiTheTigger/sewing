@@ -5,24 +5,7 @@
 sudo: required
 dist: trusty
 
-#addons:
-#  apt:
-#    sources:
-#    # add PPAs with more up-to-date toolchains
-#    - ubuntu-toolchain-r-test
-#    - llvm-toolchain-precise-3.6
-
-#    packages:
-#    # install toolchains
-#    - gcc-5
-#    - g++-5
-#    - clang-3.6
-
-
 language: c
-#compiler:
-#  - clang
-#  - gcc
 
 matrix:
   include:
@@ -43,14 +26,6 @@ matrix:
           packages:
             - clang-3.7
       env: COMPILER=clang-3.7
-
-#install:
-#   sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test;
-#   sudo apt-get update -qq;
-#
-# - if [ $CXX = "g++" ]; then
-#   sudo apt-get install -qq gcc-4.9 g++-4.9;
-#   fi;
 
 # RAM: TODO: Ninja builds.
 script:
