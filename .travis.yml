@@ -34,3 +34,4 @@ script:
   - cd build
   - CC=$COMPILER cmake ../ -G Ninja
   - ninja
+  - ctest --timeout 60
