@@ -7,6 +7,8 @@ by Naughty Dog in the talk 'Parallelizing the Naughty Dog Engine'.
 [Video](http://gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine)  
 [Slides](http://twvideo01.ubm-us.net/o1/vault/gdc2015/presentations/Gyrling_Christian_Parallelizing_The_Naughty.pdf)
 
+![Build Status](https://travis-ci.org/JodiTheTigger/sewing.svg?branch=master "Build Status")
+
 Example
 =======
 
