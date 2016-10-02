@@ -41,7 +41,7 @@ matrix:
           packages:
             - gcc-5
             - ninja-build
-      env: COMPILER=gcc-5
+      env: MY_CC=gcc-5 MY_CXX=g++-5
 
     - compiler: gcc
       addons:
@@ -52,7 +52,7 @@ matrix:
             - gcc-5-multilib
             - g++-5-multilib
             - ninja-build
-      env: COMPILER=gcc-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+      env: MY_CC=gcc-5 MY_CXX=g++-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
     #- compiler: clang
       #addons:
@@ -63,7 +63,7 @@ matrix:
           #packages:
             #- clang-3.7
             #- ninja-build
-      #env: COMPILER=clang-3.7
+      #env: MY_CC=clang-3.7 MY_CXX=clang++-3.7
 
     #- compiler: clang
       #addons:
@@ -76,13 +76,13 @@ matrix:
             #- ninja-build
             #- gcc-multilib
             #- g++-multilib
-      #env: COMPILER=clang-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+      #env: MY_CC=clang-3.7 MY_CXX=clang++-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
 script:
   - ls -l /usr/lib/gcc
   - $COMPILER --version
   - mkdir build
   - cd build
-  - CC=$COMPILER cmake ../ -G Ninja $CMAKE_OPTIONS
+  - CC=$MY_CC CXX=$MY_CXX cmake ../ -G Ninja $CMAKE_OPTIONS
   - ninja
   - ctest --timeout 60
