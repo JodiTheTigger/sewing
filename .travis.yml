@@ -54,29 +54,29 @@ matrix:
             - ninja-build
       env: COMPILER=gcc-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-          packages:
-            - clang-3.7
-            - ninja-build
-      env: COMPILER=clang-3.7
+    #- compiler: clang
+      #addons:
+        #apt:
+          #sources:
+            #- ubuntu-toolchain-r-test
+            #- llvm-toolchain-precise-3.7
+          #packages:
+            #- clang-3.7
+            #- ninja-build
+      #env: COMPILER=clang-3.7
 
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-          packages:
-            - clang-3.7
-            - ninja-build
-            - gcc-multilib
-            - g++-multilib
-      env: COMPILER=clang-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+    #- compiler: clang
+      #addons:
+        #apt:
+          #sources:
+            #- ubuntu-toolchain-r-test
+            #- llvm-toolchain-precise-3.7
+          #packages:
+            #- clang-3.7
+            #- ninja-build
+            #- gcc-multilib
+            #- g++-multilib
+      #env: COMPILER=clang-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
 script:
   - ls -l /usr/lib/gcc
