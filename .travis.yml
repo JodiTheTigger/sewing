@@ -50,6 +50,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-5-multilib
+            - g++-5-multilib
             - ninja-build
       env: COMPILER=gcc-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
