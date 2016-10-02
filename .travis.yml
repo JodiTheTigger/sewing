@@ -52,9 +52,9 @@ matrix:
             - clang-3.7
             - ninja-build
       env: COMPILER=clang-3.7
-    - env:
-        - CMAKE_OPTIONS=
-        - CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+  env:
+    - CMAKE_OPTIONS=
+    - CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
 script:
   - mkdir build
