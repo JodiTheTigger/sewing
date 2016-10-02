@@ -18,10 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# ------------------------------------------------------------------------------
-# sewing library
-# ------------------------------------------------------------------------------
-
 # Use Ubuntu 14.04
 sudo: required
 dist: trusty
@@ -55,34 +51,31 @@ matrix:
             - ninja-build
       env: MY_CC=gcc-5 MY_CXX=g++-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
-    #- compiler: clang
-      #addons:
-        #apt:
-          #sources:
-            #- ubuntu-toolchain-r-test
-            #- llvm-toolchain-precise-3.7
-          #packages:
-            #- clang-3.7
-            #- ninja-build
-      #env: MY_CC=clang-3.7 MY_CXX=clang++-3.7
+    - compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+          packages:
+            - clang-3.7
+            - ninja-build
+      env: MY_CC=clang-3.7 MY_CXX=clang++-3.7
 
-    #- compiler: clang
-      #addons:
-        #apt:
-          #sources:
-            #- ubuntu-toolchain-r-test
-            #- llvm-toolchain-precise-3.7
-          #packages:
-            #- clang-3.7
-            #- ninja-build
-            #- gcc-multilib
-            #- g++-multilib
-      #env: MY_CC=clang-3.7 MY_CXX=clang++-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+    - compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+          packages:
+            - clang-3.7
+            - ninja-build
+            - gcc-multilib
+            - g++-multilib
+      env: MY_CC=clang-3.7 MY_CXX=clang++-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
 script:
-  - ls -l /usr/lib/gcc
-  - $MY_CC --version
-  - $MY_CXX --version
   - mkdir build
   - cd build
   - CC=$MY_CC CXX=$MY_CXX cmake ../ -G Ninja $CMAKE_OPTIONS
