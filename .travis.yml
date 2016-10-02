@@ -80,7 +80,8 @@ matrix:
 
 script:
   - ls -l /usr/lib/gcc
-  - $COMPILER --version
+  - $MY_CC --version
+  - $MY_CXX --version
   - mkdir build
   - cd build
   - CC=$MY_CC CXX=$MY_CXX cmake ../ -G Ninja $CMAKE_OPTIONS
