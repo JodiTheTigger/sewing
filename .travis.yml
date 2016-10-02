@@ -79,6 +79,8 @@ matrix:
       env: COMPILER=clang-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
 script:
+  - ls -l /usr/lib/gcc
+  - $COMPILER --version
   - mkdir build
   - cd build
   - CC=$COMPILER cmake ../ -G Ninja $CMAKE_OPTIONS
