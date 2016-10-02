@@ -34,7 +34,7 @@ matrix:
       env: MY_CC=clang MY_CXX=clang++
       before_install:
       - brew update
-      - brew install ninja-build
+      - brew install ninja
 
     #- os: linux
       #compiler: gcc
