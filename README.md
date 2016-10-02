@@ -7,7 +7,7 @@ by Naughty Dog in the talk 'Parallelizing the Naughty Dog Engine'.
 [Video](http://gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine)  
 [Slides](http://twvideo01.ubm-us.net/o1/vault/gdc2015/presentations/Gyrling_Christian_Parallelizing_The_Naughty.pdf)
 
-![Build Status](https://travis-ci.org/JodiTheTigger/sewing.svg?branch=master "Build Status")
+[![Build Status](https://travis-ci.org/JodiTheTigger/sewing.svg?branch=master)](https://travis-ci.org/JodiTheTigger/sewing)
 
 Example
 =======
@@ -96,7 +96,7 @@ Building
 ========
 
 The build system uses CMake for building. This can be used to generate Make,
-Ninja, MSVC or XCode projects easily.
+Ninja, MSVC or Xcode projects easily.
 
 Requirements
 ------------

@@ -18,10 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# ------------------------------------------------------------------------------
-# sewing library
-# ------------------------------------------------------------------------------
-
 # Use Ubuntu 14.04
 sudo: required
 dist: trusty
@@ -40,8 +36,21 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-5
+            - g++-5
             - ninja-build
-      env: COMPILER=gcc-5
+      env: MY_CC=gcc-5 MY_CXX=g++-5
+
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-5-multilib
+            - g++-5-multilib
+            - ninja-build
+      env: MY_CC=gcc-5 MY_CXX=g++-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+
     - compiler: clang
       addons:
         apt:
@@ -51,11 +60,24 @@ matrix:
           packages:
             - clang-3.7
             - ninja-build
-      env: COMPILER=clang-3.7
+      env: MY_CC=clang-3.7 MY_CXX=clang++-3.7
+
+    - compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+          packages:
+            - clang-3.7
+            - ninja-build
+            - gcc-multilib
+            - g++-multilib
+      env: MY_CC=clang-3.7 MY_CXX=clang++-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
 script:
   - mkdir build
   - cd build
-  - CC=$COMPILER cmake ../ -G Ninja
+  - CC=$MY_CC CXX=$MY_CXX cmake ../ -G Ninja $CMAKE_OPTIONS
   - ninja
   - ctest --timeout 60
