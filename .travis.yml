@@ -52,6 +52,7 @@ matrix:
             - gcc-5
             - ninja-build
             - gcc-multilib
+            - g++-multilib
       env: COMPILER=gcc-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
     - compiler: clang
@@ -75,6 +76,7 @@ matrix:
             - clang-3.7
             - ninja-build
             - gcc-multilib
+            - g++-multilib
       env: COMPILER=clang-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
 script:
