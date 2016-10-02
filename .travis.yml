@@ -29,7 +29,12 @@ language: c
 
 matrix:
   include:
-    - compiler: gcc
+    - os: osx
+      compiler: clang
+      env: MY_CC=clang MY_CXX=clang++
+
+    - os: linux
+      compiler: gcc
       addons:
         apt:
           sources:
@@ -40,7 +45,8 @@ matrix:
             - ninja-build
       env: MY_CC=gcc-5 MY_CXX=g++-5
 
-    - compiler: gcc
+    - os: linux
+      compiler: gcc
       addons:
         apt:
           sources:
@@ -51,7 +57,8 @@ matrix:
             - ninja-build
       env: MY_CC=gcc-5 MY_CXX=g++-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
-    - compiler: clang
+    - os: linux
+      compiler: clang
       addons:
         apt:
           sources:
@@ -62,7 +69,8 @@ matrix:
             - ninja-build
       env: MY_CC=clang-3.7 MY_CXX=clang++-3.7
 
-    - compiler: clang
+    - os: linux
+      compiler: clang
       addons:
         apt:
           sources:
