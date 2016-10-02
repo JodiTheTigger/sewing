@@ -18,47 +18,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# ------------------------------------------------------------------------------
-# sewing library
-# ------------------------------------------------------------------------------
+# the name of the target operating system
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR i386)
 
-# Use Ubuntu 14.04
-sudo: required
-dist: trusty
+# force 32 bit builds.
+set(CMAKE_C_FLAGS "-m32" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS "-m32" CACHE STRING "" FORCE)
+set(CMAKE_ASM_FLAGS "-m32" CACHE STRING "" FORCE)
 
-language: c
+# here is the target environment located
+#set(CMAKE_FIND_ROOT_PATH   /usr/lib32)
 
-# Supporting non-standard gcc/clang taken from
-# http://genbattle.bitbucket.org/blog/2016/01/17/c++-travis-ci/
-
-matrix:
-  include:
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-5
-            - ninja-build
-      env: COMPILER=gcc-5
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-          packages:
-            - clang-3.7
-            - ninja-build
-      env: COMPILER=clang-3.7
-    - env:
-        - CMAKE_OPTIONS=
-        - CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
-
-script:
-  - mkdir build
-  - cd build
-  - CC=$COMPILER cmake ../ -G Ninja $CMAKE_OPTIONS
-  - ninja
-  - ctest --timeout 60
+# adjust the default behaviour of the FIND_XXX() commands:
+# search headers and libraries in the target environment, search
+# programs in the host environment
+#set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+#set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+#set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
