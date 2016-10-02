@@ -41,7 +41,11 @@ matrix:
           packages:
             - gcc-5
             - ninja-build
-      env: COMPILER=gcc-5
+      env: 
+        - COMPILER=gcc-5 CMAKE_OPTIONS=
+        - COMPILER=gcc-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+
+
     - compiler: clang
       addons:
         apt:
@@ -51,10 +55,9 @@ matrix:
           packages:
             - clang-3.7
             - ninja-build
-      env: COMPILER=clang-3.7
-  env:
-    - CMAKE_OPTIONS=
-    - CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+      env: 
+        - COMPILER=clang-3.7 CMAKE_OPTIONS=
+        - COMPILER=clang-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
 script:
   - mkdir build
