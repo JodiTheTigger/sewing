@@ -40,6 +40,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-5
+            - g++-5
             - ninja-build
       env: MY_CC=gcc-5 MY_CXX=g++-5
 
