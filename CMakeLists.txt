@@ -42,7 +42,7 @@
 set(PROJECT_NAME_SEWING "sewing")
 project(${PROJECT_NAME_SEWING})
 
-cmake_minimum_required(VERSION 3.2.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 # ------------------------------------------------------------------------------
 
