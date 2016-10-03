@@ -288,6 +288,10 @@ lots of threads.
 Have someone else look at the code, point out any stupids that can easly be
 fixed.
 
+Read up on the article suggested by Josh Simmons to see if that can improve speed
+due to improving context switching branch prediction.
+http://www.crystalclearsoftware.com/soc/coroutine/coroutine/linuxasm.html
+
 Tutorial
 ========
 
