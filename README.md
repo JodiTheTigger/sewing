@@ -100,10 +100,12 @@ Building
 The build system uses CMake for building. This can be used to generate Make,
 Ninja, MSVC or Xcode projects easily.
 
+MSVC doesn't support C11 atomics, so it'll need to be built using C++11 instead.
+
 Requirements
 ------------
 
- * CMake version 3.3.0 or higher
+ * CMake version 3.0.0 or higher
  * C11 or C++11 with atomics support
  * `pthread` on linux
  * `hwloc` for the test code (optional)
