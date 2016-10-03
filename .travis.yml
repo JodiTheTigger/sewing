@@ -30,6 +30,7 @@ language: c
 matrix:
   include:
     - os: osx
+      osx_image: xcode7.3
       compiler: clang
       env: MY_CC=clang MY_CXX=clang++
       before_install:
