@@ -86,7 +86,7 @@ Support
 | --------| ----- | --------| ------- | --- |
 | arm     | YES   | t       |         | t   |
 | arm_64  | t     |         |         | t   |
-| x86     | YES   | YES     | t       |     |
+| x86     | YES   | YES     | YES     |     |
 | x86_64  | YES   | YES     | YES     |     |
 | mips    | t     |         |         |     |
 | ppc     | t     |         | t       |     |

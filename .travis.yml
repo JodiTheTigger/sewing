@@ -37,6 +37,14 @@ matrix:
       - brew update
       - brew install ninja
 
+    - os: osx
+      osx_image: xcode7.3
+      compiler: clang
+      env: MY_CC=clang MY_CXX=clang++ CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/unix_i386_toolchain.cmake"
+      before_install:
+      - brew update
+      - brew install ninja
+
     - os: linux
       compiler: gcc
       addons:
@@ -59,7 +67,7 @@ matrix:
             - gcc-5-multilib
             - g++-5-multilib
             - ninja-build
-      env: MY_CC=gcc-5 MY_CXX=g++-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+      env: MY_CC=gcc-5 MY_CXX=g++-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/unix_i386_toolchain.cmake"
 
     - os: linux
       compiler: clang
@@ -85,11 +93,12 @@ matrix:
             - ninja-build
             - gcc-multilib
             - g++-multilib
-      env: MY_CC=clang-3.7 MY_CXX=clang++-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+      env: MY_CC=clang-3.7 MY_CXX=clang++-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/unix_i386_toolchain.cmake"
 
 script:
   - mkdir build
   - cd build
   - CC=$MY_CC CXX=$MY_CXX cmake ../ -G Ninja $CMAKE_OPTIONS
   - ninja
+  - file ./sewing_test
   - ctest --timeout 60
