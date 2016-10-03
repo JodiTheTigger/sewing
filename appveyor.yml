@@ -3,12 +3,17 @@ clone_folder: c:\projects\sewing
 platform: x64
 configuration: Release
 
+environment:
+  matrix:
+    - generator: "Visual Studio 14 2015 Win64"
+    - generator: "Visual Studio 14 2015"
+
 build:
 
 build_script:
   - cd "c:\projects\sewing"
   - mkdir build
   - cd build
-  - cmake cmake -Dsewing_use_cxx_11=ON ../ -G"Visual Studio 14 2015 Win64"
+  - cmake cmake -Dsewing_use_cxx_11=ON ../ -G$generator
   - msbuild /m /p:Configuration=Release sewing_test.sln
   - ctest --timeout 60
