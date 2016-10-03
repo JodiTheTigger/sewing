@@ -23,7 +23,7 @@ SOFTWARE.
 
 #include "sewing.h"
 
-#include <malloc.h>
+#include <stdlib.h>
 #include <stdio.h>
 // printf, stdout, fflush
 
@@ -66,6 +66,46 @@ Sew_Time sew_test_now()
 {
     struct timespec start_time;
     clock_gettime(CLOCK_REALTIME, &start_time);
+    return start_time;
+}
+
+int64_t sew_test_delta
+(
+    Sew_Time* then
+)
+{
+    Sew_Time time_sew_test_now = sew_test_now();
+
+    int64_t diff_us = (time_sew_test_now.tv_sec - then->tv_sec) * 1000000;
+    diff_us += (time_sew_test_now.tv_nsec - then->tv_nsec) / 1000;
+
+    return diff_us;
+}
+
+#elif __APPLE__
+
+#include <sys/time.h>
+
+#include <mach/clock.h>
+#include <mach/mach.h>
+
+typedef struct timespec Sew_Time;
+
+Sew_Time sew_test_now()
+{
+    clock_serv_t cclock;
+    mach_timespec_t mts;
+
+    host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
+
+    clock_get_time(cclock, &mts);
+    mach_port_deallocate(mach_task_self(), cclock);
+
+    struct timespec start_time;
+
+    start_time.tv_sec  = mts.tv_sec;
+    start_time.tv_nsec = mts.tv_nsec;
+
     return start_time;
 }
 
@@ -159,7 +199,7 @@ void Sew_Test_Set_hwloc_thread_affinity
                             !hwloc_set_thread_cpubind
                             (
                                 t
-#if __linux__
+#if (__linux__ || __APPLE__)
                                 , threads[threads_left - 1]
 #elif defined(_WIN32)
                                 , threads[threads_left - 1].handle

@@ -28,7 +28,7 @@ SOFTWARE.
 
 // -----------------------------------------------------------------------------
 
-#if __linux__
+#if (__linux__ || __APPLE__)
 
 #include <pthread.h>
 typedef pthread_t Sew_Thread;

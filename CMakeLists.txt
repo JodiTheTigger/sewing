@@ -42,7 +42,7 @@
 set(PROJECT_NAME_SEWING "sewing")
 project(${PROJECT_NAME_SEWING})
 
-cmake_minimum_required(VERSION 3.2.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 # ------------------------------------------------------------------------------
 
@@ -124,18 +124,17 @@ if (WIN32)
     if (MSVC)
         set(sewing_asm "masm.asm")
     endif()
-endif()
-
-if (UNIX)
-    if (NOT APPLE)
-
-        if (NOT sewing_os)
-            set(sewing_os  "sysv")
-        endif()
-
-        set(sewing_abi "elf")
-        set(sewing_asm "gas.S")
+elseif(APPLE)
+    set(sewing_os  "sysv")
+    set(sewing_abi "macho")
+    set(sewing_asm "gas.S")
+elseif(UNIX)
+    if (NOT sewing_os)
+        set(sewing_os  "sysv")
     endif()
+
+    set(sewing_abi "elf")
+    set(sewing_asm "gas.S")
 endif()
 
 # ------------------------------------------------------------------------------
