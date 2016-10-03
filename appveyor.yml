@@ -5,15 +5,15 @@ configuration: Release
 
 environment:
   matrix:
-    - generator: "Visual Studio 14 2015 Win64"
-    - generator: "Visual Studio 14 2015"
+    - VS_GENERATOR: "Visual Studio 14 2015 Win64"
+    - VS_GENERATOR: "Visual Studio 14 2015"
 
 build:
 
 build_script:
-  - cd "c:\projects\sewing"
-  - mkdir build
-  - cd build
-  - cmake cmake -Dsewing_use_cxx_11=ON ../ -G%generator%
-  - msbuild /m /p:Configuration=Release sewing_test.sln
-  - ctest --timeout 60
+  - cmd: cd "c:\projects\sewing"
+  - cmd: mkdir build
+  - cmd: cd build
+  - cmd: cmake cmake -Dsewing_use_cxx_11=ON ../ -G%VS_GENERATOR%
+  - cmd: msbuild /m /p:Configuration=Release sewing_test.sln
+  - cmd: ctest --timeout 60
