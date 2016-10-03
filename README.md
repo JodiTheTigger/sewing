@@ -9,6 +9,8 @@ by Naughty Dog in the talk 'Parallelizing the Naughty Dog Engine'.
 
 [![Build Status](https://travis-ci.org/JodiTheTigger/sewing.svg?branch=master)](https://travis-ci.org/JodiTheTigger/sewing)
 
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/JodiTheTigger/sewing?branch=master&svg=true)](https://ci.appveyor.com/project/JodiTheTigger/sewing)
+
 Example
 =======
 
