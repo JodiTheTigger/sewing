@@ -9,6 +9,6 @@ build_script:
   - cd "c:\projects\sewing"
   - mkdir build
   - cd build
-  - cmake ../ -G"Visual Studio 14 2015 Win64"
+  - cmake cmake -Dsewing_use_cxx_11=ON ../ -G"Visual Studio 14 2015 Win64"
   - msbuild /m /p:Configuration=Release sewing_test.sln
   - ctest --timeout 60
