@@ -3,10 +3,19 @@ clone_folder: c:\projects\sewing
 platform: x64
 configuration: Release
 
-environment:
-  matrix:
+matrix:
+  - environment:
     - VS_GENERATOR: "Visual Studio 14 2015 Win64"
+    platform: x64
+  - environment:
     - VS_GENERATOR: "Visual Studio 14 2015"
+    platform: x86
+
+
+#environment:
+  #matrix:
+    #- VS_GENERATOR: "Visual Studio 14 2015 Win64"
+    #- VS_GENERATOR: "Visual Studio 14 2015"
 
 build:
 
