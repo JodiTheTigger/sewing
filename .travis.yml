@@ -37,55 +37,55 @@ matrix:
       - brew update
       - brew install ninja
 
-    #- os: linux
-      #compiler: gcc
-      #addons:
-        #apt:
-          #sources:
-            #- ubuntu-toolchain-r-test
-          #packages:
-            #- gcc-5
-            #- g++-5
-            #- ninja-build
-      #env: MY_CC=gcc-5 MY_CXX=g++-5
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-5
+            - g++-5
+            - ninja-build
+      env: MY_CC=gcc-5 MY_CXX=g++-5
 
-    #- os: linux
-      #compiler: gcc
-      #addons:
-        #apt:
-          #sources:
-            #- ubuntu-toolchain-r-test
-          #packages:
-            #- gcc-5-multilib
-            #- g++-5-multilib
-            #- ninja-build
-      #env: MY_CC=gcc-5 MY_CXX=g++-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-5-multilib
+            - g++-5-multilib
+            - ninja-build
+      env: MY_CC=gcc-5 MY_CXX=g++-5 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
-    #- os: linux
-      #compiler: clang
-      #addons:
-        #apt:
-          #sources:
-            #- ubuntu-toolchain-r-test
-            #- llvm-toolchain-precise-3.7
-          #packages:
-            #- clang-3.7
-            #- ninja-build
-      #env: MY_CC=clang-3.7 MY_CXX=clang++-3.7
+    - os: linux
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+          packages:
+            - clang-3.7
+            - ninja-build
+      env: MY_CC=clang-3.7 MY_CXX=clang++-3.7
 
-    #- os: linux
-      #compiler: clang
-      #addons:
-        #apt:
-          #sources:
-            #- ubuntu-toolchain-r-test
-            #- llvm-toolchain-precise-3.7
-          #packages:
-            #- clang-3.7
-            #- ninja-build
-            #- gcc-multilib
-            #- g++-multilib
-      #env: MY_CC=clang-3.7 MY_CXX=clang++-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
+    - os: linux
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+          packages:
+            - clang-3.7
+            - ninja-build
+            - gcc-multilib
+            - g++-multilib
+      env: MY_CC=clang-3.7 MY_CXX=clang++-3.7 CMAKE_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=../cmake/linux_i386_toolchain.cmake"
 
 script:
   - mkdir build
