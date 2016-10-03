@@ -18,21 +18,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# the name of the target operating system
-#set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR i386)
 
 # force 32 bit builds.
 set(CMAKE_C_FLAGS "-m32" CACHE STRING "" FORCE)
 set(CMAKE_CXX_FLAGS "-m32" CACHE STRING "" FORCE)
 set(CMAKE_ASM_FLAGS "-m32" CACHE STRING "" FORCE)
-
-# here is the target environment located
-#set(CMAKE_FIND_ROOT_PATH   /usr/lib32)
-
-# adjust the default behaviour of the FIND_XXX() commands:
-# search headers and libraries in the target environment, search
-# programs in the host environment
-#set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-#set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-#set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
