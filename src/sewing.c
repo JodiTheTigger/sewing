@@ -144,7 +144,7 @@ typedef atomic_size_t Sew_Count;
 // Platform Code
 // -----------------------------------------------------------------------------
 
-#if __linux__
+#if (__linux__ || __APPLE__)
 
 #include <pthread.h>
 

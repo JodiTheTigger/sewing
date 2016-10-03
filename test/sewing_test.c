@@ -56,7 +56,7 @@ SOFTWARE.
 // -----------------------------------------------------------------------------
 // Timing Code
 // -----------------------------------------------------------------------------
-#if __linux__
+#if (__linux__ || __APPLE__)
 
 #include <time.h>
 
@@ -159,7 +159,7 @@ void Sew_Test_Set_hwloc_thread_affinity
                             !hwloc_set_thread_cpubind
                             (
                                 t
-#if __linux__
+#if (__linux__ || __APPLE__)
                                 , threads[threads_left - 1]
 #elif defined(_WIN32)
                                 , threads[threads_left - 1].handle
