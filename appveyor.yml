@@ -5,10 +5,10 @@ configuration: Release
 
 matrix:
   - environment:
-    - VS_GENERATOR: "Visual Studio 14 2015 Win64"
+      VS_GENERATOR: "Visual Studio 14 2015 Win64"
     platform: x64
   - environment:
-    - VS_GENERATOR: "Visual Studio 14 2015"
+      VS_GENERATOR: "Visual Studio 14 2015"
     platform: x86
 
 
