@@ -103,8 +103,8 @@ Sew_Time sew_test_now()
 
     struct timespec start_time;
 
-    result.tv_sec  = mts.tv_sec;
-    result.tv_nsec = mts.tv_nsec;
+    start_time.tv_sec  = mts.tv_sec;
+    start_time.tv_nsec = mts.tv_nsec;
 
     return start_time;
 }
