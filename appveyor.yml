@@ -1,0 +1,14 @@
+os: Visual Studio 2015
+clone_folder: c:\projects\sewing
+platform: x64
+configuration: Release
+
+build:
+
+build_script:
+  - cd "c:\projects\sewing"
+  - mkdir build
+  - cd build
+  - cmake ../ -G"Visual Studio 14 2015 Win64"
+  - msbuild /m /p:Configuration=Release sewing_test.sln
+  - ctest --timeout 60
