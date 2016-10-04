@@ -1,11 +1,11 @@
 Sewing
 ======
 
-Multiplatform multithreaded fiber based job system based on ideas presented
-by Naughty Dog in the talk 'Parallelizing the Naughty Dog Engine'.
+Small C API Multiplatform multithreaded fiber based job system based on ideas
+presented by Naughty Dog in the talk 'Parallelizing the Naughty Dog Engine'.
 
-[Video](http://gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine)  
-[Slides](http://twvideo01.ubm-us.net/o1/vault/gdc2015/presentations/Gyrling_Christian_Parallelizing_The_Naughty.pdf)
+[Naughty Dog Video](http://gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine)
+[Naughty Dog Slides](http://twvideo01.ubm-us.net/o1/vault/gdc2015/presentations/Gyrling_Christian_Parallelizing_The_Naughty.pdf)
 
 [![Build Status](https://travis-ci.org/JodiTheTigger/sewing.svg?branch=master)](https://travis-ci.org/JodiTheTigger/sewing)
 
@@ -79,20 +79,20 @@ Support
 
 ```
     YES     = Tested Working
-    c       = Compiles
+    Hack    = Someone has modifed files in order to run it
     t       = In Theory. Compile code not written yet
     <empty> = Not supported
 ```
 
-| Arch    | Linux | Windows | MacOS X | iOS |
-| --------| ----- | --------| ------- | --- |
-| arm     | YES   | t       |         | t   |
-| arm_64  | t     |         |         | t   |
-| x86     | YES   | YES     | YES     |     |
-| x86_64  | YES   | YES     | YES     |     |
-| mips    | t     |         |         |     |
-| ppc     | t     |         | t       |     |
-| ppc_64  | t     |         | t       |     |
+| Arch    | Linux | Windows | MacOS X | iOS  | Android |
+| --------| ----- | --------| ------- | ---- | ------- |
+| arm     | YES   | t       |         | Hack | Hack    |
+| arm_64  | t     |         |         | Hack | t       |
+| x86     | YES   | YES     | YES     |      | Hack    |
+| x86_64  | YES   | YES     | YES     |      | t       |
+| mips    | t     |         |         |      |         |
+| ppc     | t     |         | t       |      |         |
+| ppc_64  | t     |         | t       |      |         |
 
 Building
 ========
