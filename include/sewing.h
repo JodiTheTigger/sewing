@@ -87,7 +87,7 @@ Sew_Stitch;
 //!
 //! 'sewing' is the opaque pointer passed into the call to sew_it's
 //! 'main_procedure' procedure.
-void sew_stiches_and_finish
+void sew_stitches_and_finish
 (
       struct Sewing* sewing
     , Sew_Stitch*    stitches
@@ -104,7 +104,7 @@ void sew_stiches_and_finish
 //!
 //! 'sewing' is the opaque pointer passed into the call to sew_it's
 //! 'main_procedure' procedure.
-void sew_stiches
+void sew_stitches
 (
       struct Sewing* sewing
     , Sew_Stitch*    stitches

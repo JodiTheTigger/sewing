@@ -945,7 +945,7 @@ void sew_finish(Sewing* sewing, Sew_Chain chain)
 }
 
 
-void sew_stiches_and_finish
+void sew_stitches_and_finish
 (
       Sewing*     sewing
     , Sew_Stitch* stitches
@@ -954,11 +954,11 @@ void sew_stiches_and_finish
 {
     Sew_Chain chain;
 
-    sew_stiches(sewing, stitches, stitch_count, &chain);
+    sew_stitches(sewing, stitches, stitch_count, &chain);
     sew_finish(sewing, chain);
 }
 
-void sew_stiches
+void sew_stitches
 (
       Sewing*     sewing
     , Sew_Stitch* stitches
@@ -1096,7 +1096,7 @@ void sew_main_procedure(void* raw_main_data)
         sewing->ends[i].name      = "sew_job_quit";
     }
 
-    sew_stiches_and_finish(sewing, sewing->ends, threads);
+    sew_stitches_and_finish(sewing, sewing->ends, threads);
     // Don't expect to return from here.
 
     SEW_UNREACHABLE();
@@ -1287,7 +1287,7 @@ size_t sew_it
         , "sew_main_procedure"
     };
 
-    sew_stiches(sewing, &main_job, 1, NULL);
+    sew_stitches(sewing, &main_job, 1, NULL);
     sew_thread_start((void*) &sewing->tls[0]);
 
     for (size_t i = 0; i <= sewing->fiber_count; i++)

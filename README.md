@@ -37,7 +37,7 @@ Then make a couple of jobs (stitches) that call that procedure:
         jobs[i].name      = "hello_something";
     }
 
-    sew_stiches_and_finish(sewing, jobs, 10);
+    sew_stitches_and_finish(sewing, jobs, 10);
     // Run the 10 jobs pointed to by 'jobs'. The call will wait until all ten
     // jobs are finsihed.
 ```
@@ -65,14 +65,14 @@ For a full tutorial, see the end of this readme file.
 How is this Different from Normal Thread Job Systems?
 =====================================================
 
-'sew_stiches_and_finish' doesn't "block" in the traditional sense. while the
-code is waiting for the jobs to finish in `sew_stiches_and_finish` the current
+'sew_stitches_and_finish' doesn't "block" in the traditional sense. while the
+code is waiting for the jobs to finish in `sew_stitches_and_finish` the current
 context is swapped with a new fiber containing a new job. Only when all the
 jobs have been finished will the context be swapped back and
-`sew_stiches_and_finish` returns.
+`sew_stitches_and_finish` returns.
 
 That is, each thread is always doing work, and not "blocking" on a job that is
-stuck waiting in `sew_stiches_and_finish` (or `sew_finish`).
+stuck waiting in `sew_stitches_and_finish` (or `sew_finish`).
 
 Support
 =======
@@ -172,7 +172,7 @@ Can be set using the CMake option "Stack guard page size (bytes)."
 Gotchas
 =======
 
- * 'sew_stiches' and 'sew_stiches_and_finish' will block until all jobs are
+ * 'sew_stitches' and 'sew_stitches_and_finish' will block until all jobs are
   queued. If you are only running one thread, and the queue is full, this will
   cause a deadlock.
 
@@ -425,7 +425,7 @@ Now lets modify `main_procedure` to call it.
             jobs[i].name      = "hello_something";
         }
 
-        sew_stiches_and_finish(sewing, jobs, 10);
+        sew_stitches_and_finish(sewing, jobs, 10);
         // call will wait until all ten jobs are finsihed.
 
         // ---- NEW ------
@@ -440,7 +440,7 @@ Asynchronously
 
 How about doing it asynchronously?
 
-If you use `sew_stiches` (instead of`sew_stiches_and_finish`), then you can
+If you use `sew_stitches` (instead of`sew_stitches_and_finish`), then you can
 keep working while the jobs are run in the background until you wait for them to
 finish using `sew_finish`. Just like an asynchronously system.
 
@@ -480,12 +480,12 @@ So lets modify the `main_procedure`
 
         // ---- NEW ------
 
-        //sew_stiches_and_finish(sewing, jobs, 10);
+        //sew_stitches_and_finish(sewing, jobs, 10);
         // call will wait until all ten jobs are finsihed.
 
         Sew_Chain future;
 
-        sew_stiches(sewing, jobs, 10, &future);
+        sew_stitches(sewing, jobs, 10, &future);
         // This returns straight away, jobs run in background. 'future' is
         // updated with a handle that we can wait on later.
         // If it's set to NULL, then this is a fire and forget.
@@ -499,7 +499,7 @@ So lets modify the `main_procedure`
             jobs_100[i].name      = "hello_something";
         }
 
-        sew_stiches_and_finish(sewing, jobs_100, 100);
+        sew_stitches_and_finish(sewing, jobs_100, 100);
 
         sew_finish(sewing, future);
         // NOW we wait for the first set of jobs to finish.
