@@ -944,6 +944,49 @@ void sew_wait(Sewing* sewing, Sew_Chain chain)
     }
 }
 
+atomic_size_t* sew_get_lock(Sewing* sewing, size_t initial_value)
+{
+    for (;;)
+    {
+        for (size_t i = 0; i < sewing->fiber_count; i++)
+        {
+            atomic_size_t* lock = &sewing->locks[i];
+
+            if (atomic_load_explicit(lock, memory_order_relaxed) == SEW_INVALID)
+            {
+                size_t expected = SEW_INVALID;
+
+                if
+                (
+                    atomic_compare_exchange_weak_explicit
+                    (
+                          lock
+                        , &expected
+                        , initial_value
+                        , memory_order_relaxed
+                        , memory_order_relaxed
+                    )
+                )
+                {
+                    return lock;
+                }
+            }
+        }
+    }
+}
+
+void sew_external(Sewing* sewing, Sew_Chain* chain)
+{
+    Sew_Count** counter = (Sew_Count**) chain;
+
+    *counter = sew_get_lock(sewing, 1);
+}
+
+void sew_external_finished(Sew_Chain chain)
+{
+    Sew_Count* counter = (Sew_Count*) chain;
+    atomic_store_explicit(counter, 0ul, memory_order_release);
+}
 
 void sew_stitches_and_wait
 (
@@ -971,48 +1014,8 @@ void sew_stitches
 
     if (counter)
     {
-        // find a free lock.
-        for (;;)
-        {
-            atomic_size_t* free_lock = NULL;
-
-            for (size_t i = 0; i < sewing->fiber_count; i++)
-            {
-                atomic_size_t* lock = &sewing->locks[i];
-
-                if
-                (
-                    atomic_load_explicit(lock, memory_order_relaxed)
-                    == SEW_INVALID
-                )
-                {
-                    size_t expected = SEW_INVALID;
-
-                    if
-                    (
-                        atomic_compare_exchange_weak_explicit
-                        (
-                              lock
-                            , &expected
-                            , stitch_count
-                            , memory_order_relaxed
-                            , memory_order_relaxed
-                        )
-                    )
-                    {
-                        free_lock = lock;
-                        break;
-                    }
-                }
-            }
-
-            if (free_lock)
-            {
-                *counter       = free_lock;
-                counter_to_use = free_lock;
-                break;
-            }
-        }
+        *counter       = sew_get_lock(sewing, stitch_count);
+        counter_to_use = *counter;
     }
 
     for (size_t i = 0; i < stitch_count; i++)

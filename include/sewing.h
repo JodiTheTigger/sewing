@@ -28,6 +28,12 @@ SOFTWARE.
 
 // -----------------------------------------------------------------------------
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// -----------------------------------------------------------------------------
+
 #if (__linux__ || __APPLE__)
 
 #include <pthread.h>
@@ -50,10 +56,7 @@ Sew_Thread;
 
 #endif
 
-// -----------------------------------------------------------------------------
-#ifdef __cplusplus
-extern "C" {
-#endif
+
 // -----------------------------------------------------------------------------
 
 struct Sewing;
@@ -121,6 +124,22 @@ void sew_wait(struct Sewing* sewing, Sew_Chain chain);
 
 // -----------------------------------------------------------------------------
 
+//! Used to get a chain that's not tied to any stitches. The chain is marked as
+//! "in progress", and will block any call to sew_wait until it is marked
+//! as finished.
+void sew_external(struct Sewing* sewing, Sew_Chain* chain);
+
+//! Used to mark a chain taken from sew_external as finished.
+//
+//! Once called, the chain is now invalid, and calling sew_external_finished
+//! again with this invalid chain can result in undefined behaviour.
+//!
+//! WARNING: Do not pass in a chain from sew_stitches, as it will result in
+//! undefined behaviour (fiber leaks, unrelated jobs finishing, etcetc)
+void sew_external_finished(Sew_Chain chain);
+
+// -----------------------------------------------------------------------------
+
 //! Dual use:
 //! 1) Entry point to the sewing system.
 //! 2) Get the amount of memory required for sewing_memory (in bytes)
@@ -151,9 +170,12 @@ size_t sew_it
     , Sew_Procedure_Argument main_procedure_argument
 );
 
+// -----------------------------------------------------------------------------
+
 #ifdef __cplusplus
 }
 #endif
+
 // -----------------------------------------------------------------------------
 
 #endif

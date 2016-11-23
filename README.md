@@ -173,17 +173,25 @@ Gotchas
 =======
 
  * 'sew_stitches' and 'sew_stitches_and_wait' will block until all jobs are
-  queued. If you are only running one thread, and the queue is full, this will
-  cause a deadlock.
+   queued. If you are only running one thread, and the queue is full, this will
+   cause a deadlock.
 
  * The system will deadlock if all fibers are used up. You can put a breakpoint
    in `sew_get_free_fiber` on the line `return SEW_INVALID;` if you suspect this
    is happening to you.
 
  * When `Sew_Procedure_Main` exits, all threads and fibers are destroyed. If
-  there are any outstanding fibers waiting to finish, they will NOT be called.
-  This could cause a resource leak if those fibers needed to free memory,
-  close handles, call destructors or run cleanup code.
+   there are any outstanding fibers waiting to finish, they will NOT be called.
+   This could cause a resource leak if those fibers needed to free memory,
+   close handles, call destructors or run cleanup code.
+
+ * `sew_external` will block until it can get an internal signal object. If you
+   have used up all your fibers and call this, it will block forever.
+
+ * If you call `sew_external_finished` with a `Sew_Chain` that wasn't returned
+   by `sew_external`, or call it twice with the same Sew_Chain, then you will
+   get undefined behaviour. Symptoms might be fiber leaks, unrelated jobs
+   finishing, or deadlocks.
 
  * Make sure you know what your OS's min and max stack sizes are.
 
@@ -411,10 +419,10 @@ Now lets modify `main_procedure` to call it.
 
         // ---- NEW ------
 
-        // remove Unused variable warnings
         (void) threads;
         (void) thread_count;
         (void) procedure_argument;
+        // remove Unused variable warnings
 
         Sew_Stitch jobs[10];
 
@@ -464,10 +472,10 @@ So lets modify the `main_procedure`
 
         // 'procedure_argument' is the value passed to the call to 'sew_it'.
 
-        // remove Unused variable warnings
         (void) threads;
         (void) thread_count;
         (void) procedure_argument;
+        // remove Unused variable warnings
 
         Sew_Stitch jobs[10];
 
@@ -505,6 +513,121 @@ So lets modify the `main_procedure`
         // NOW we wait for the first set of jobs to finish.
 
         // ---- NEW ------
+
+        // When this function exits, all threads will be destroyed and
+        // 'sew_it' will return.
+    }
+```
+
+External Triggers
+-----------------
+
+This is nice, but how do I make it so that fibers run at certain intervals,
+or when some IO is complete, or an event is triggered?
+
+We can use `sew_external` to get a `Sew_Chain` that we control, then a fiber can
+use `sew_wait` to wait for it. When the fiber is ready to be run we can call
+`sew_external_finished` to mark the chain 'completed' and the fiber will return
+from its wait.
+
+This is nice, but how do I make it so that fibers run at certain intervals,
+or when some IO is complete, or an event is triggered?
+
+Ok, I'll explain with some code:
+
+Lets make a function that waits on a chain.
+
+```
+    typedef struct Waiter
+    {
+        struct Sewing* sewing;
+        Sew_Chain      chain;
+    }
+    Waiter;
+
+    void wait_for_something(Sew_Procedure_Argument argument)
+    {
+        Waiter* waiter = (Waiter*) argument;
+
+        printf("%u waiting\n", (unsigned) (size_t) waiter->chain);
+
+        sew_wait(waiter->sewing, waiter->chain);
+
+        printf("%u done\n", (unsigned) (size_t) waiter->chain);
+    }
+```
+
+You would put your code that does IO wait or reacts to a trigger after the
+`sew_wait` that's waiting on our custom tigger.
+
+we'll add some code to the bottom of `main_procedure` to simulate
+'triggering' a waiting fiber. First we setup four chains that we control, and
+fibers that will wait for them.
+
+```
+        sew_wait(sewing, future);
+        // NOW we wait for the first set of jobs to finish.
+
+        // ---- NEW ------
+
+        Waiter     waiters[4];
+        Sew_Stitch waiting_jobs[4];
+
+        for (unsigned i = 0; i < 4; i++)
+        {
+            waiters[i].sewing = sewing;
+            sew_external(sewing, &waiters[i].chain);
+
+            waiting_jobs[i].procedure = wait_for_something;
+            waiting_jobs[i].argument  = (Sew_Procedure_Argument) &waiters[i];
+            waiting_jobs[i].name      = "wait_for_something";
+        }
+```
+
+Queue them up, but don't wait for them to finish, as we'll deadlock if we do
+that now.
+
+
+```
+        Sew_Chain wait_for_everything;
+
+        sew_stitches(sewing, waiting_jobs, 4, &wait_for_everything);
+```
+
+Now we'll trigger the waiting jobs manually ourselves. The example is a bit
+silly, but you get the general idea.
+
+```
+        for (size_t i = 0 ; i < 1000000000; i++)
+        {
+            if (i == 3256262)
+            {
+                sew_external_finished(waiters[0].chain);
+            }
+
+            if (i == 32598753)
+            {
+                sew_external_finished(waiters[1].chain);
+            }
+
+            if (i == 304823474)
+            {
+                sew_external_finished(waiters[2].chain);
+            }
+
+            if (i == 982432049)
+            {
+                sew_external_finished(waiters[3].chain);
+            }
+        }
+```
+
+Now it's important to call `sew_wait` as otherwise we will leak the
+`Sew_Chain`.
+
+
+```
+        sew_wait(sewing, wait_for_everything);
 
         // When this function exits, all threads will be destroyed and
         // 'sew_it' will return.
