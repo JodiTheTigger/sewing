@@ -295,7 +295,7 @@ void sew_test_main_10k_empty_jobs
                 ? (size_t) (QUEUE_SIZE - 16)
                 : (size_t) (COUNT_EMPTY_JOBS - i);
 
-            sew_stitches_and_finish(sewing, &lots_o_jobs[i], queue_count);
+            sew_stitches_and_wait(sewing, &lots_o_jobs[i], queue_count);
         }
 
         int64_t ns = sew_test_delta(&start);
@@ -342,7 +342,7 @@ void sew_test_dependency_tree(Sew_Procedure_Argument raw)
             jobs[i].name      = "sew_test_dependency_tree";
         }
 
-        sew_stitches_and_finish(info->sewing, jobs, count);
+        sew_stitches_and_wait(info->sewing, jobs, count);
     }
 }
 
@@ -541,7 +541,7 @@ void sew_test_fill_all(struct Sewing* sewing, Sew_Test_Set* data)
         jobs[i].name      = "sew_test_fill_wrapper";
     }
 
-    sew_stitches_and_finish(sewing, jobs, COUNT_CACHE_GROUPS);
+    sew_stitches_and_wait(sewing, jobs, COUNT_CACHE_GROUPS);
 }
 
 void sew_test_sort_all(struct Sewing* sewing, Sew_Test_Set* data)
@@ -564,7 +564,7 @@ void sew_test_sort_all(struct Sewing* sewing, Sew_Test_Set* data)
         }
     }
 
-    sew_stitches_and_finish(sewing, jobs, actual_stitches);
+    sew_stitches_and_wait(sewing, jobs, actual_stitches);
 }
 
 void sew_test_edge(Sew_Procedure_Argument raw_set)
@@ -585,7 +585,7 @@ void sew_test_edge_all(struct Sewing* sewing, Sew_Test_Set* data)
         jobs[i].name      = "sew_test_edge";
     }
 
-    sew_stitches_and_finish(sewing, jobs, COUNT_CACHE_GROUPS - 1);
+    sew_stitches_and_wait(sewing, jobs, COUNT_CACHE_GROUPS - 1);
 }
 
 void sew_test_main_parallel_insertion_sort

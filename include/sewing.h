@@ -87,7 +87,7 @@ Sew_Stitch;
 //!
 //! 'sewing' is the opaque pointer passed into the call to sew_it's
 //! 'main_procedure' procedure.
-void sew_stitches_and_finish
+void sew_stitches_and_wait
 (
       struct Sewing* sewing
     , Sew_Stitch*    stitches
@@ -98,7 +98,7 @@ void sew_stitches_and_finish
 
 //! Run 'stitch_count' amount of jobs (passed in the flat array 'stithces'), and
 //! if chain is non-null, then set chain to a value that can be used to wait for
-//! the jobs in a call to 'sew_finish'.
+//! the jobs in a call to 'sew_wait'.
 //!
 //! This will block until all items have been queued in the job queue.
 //!
@@ -117,7 +117,7 @@ void sew_stitches
 //!
 //! If chain is null, then the call may or may not yield to the job system
 //! before returning.
-void sew_finish(struct Sewing* sewing, Sew_Chain chain);
+void sew_wait(struct Sewing* sewing, Sew_Chain chain);
 
 // -----------------------------------------------------------------------------
 

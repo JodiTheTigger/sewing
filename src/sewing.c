@@ -912,7 +912,7 @@ void sew_weave(intptr_t raw_tls)
     SEW_UNREACHABLE();
 }
 
-void sew_finish(Sewing* sewing, Sew_Chain chain)
+void sew_wait(Sewing* sewing, Sew_Chain chain)
 {
     Sew_Count* counter = (Sew_Count*) chain;
     size_t wait_value  = 0;
@@ -945,7 +945,7 @@ void sew_finish(Sewing* sewing, Sew_Chain chain)
 }
 
 
-void sew_stitches_and_finish
+void sew_stitches_and_wait
 (
       Sewing*     sewing
     , Sew_Stitch* stitches
@@ -955,7 +955,7 @@ void sew_stitches_and_finish
     Sew_Chain chain;
 
     sew_stitches(sewing, stitches, stitch_count, &chain);
-    sew_finish(sewing, chain);
+    sew_wait(sewing, chain);
 }
 
 void sew_stitches
@@ -1096,7 +1096,7 @@ void sew_main_procedure(void* raw_main_data)
         sewing->ends[i].name      = "sew_job_quit";
     }
 
-    sew_stitches_and_finish(sewing, sewing->ends, threads);
+    sew_stitches_and_wait(sewing, sewing->ends, threads);
     // Don't expect to return from here.
 
     SEW_UNREACHABLE();
@@ -1117,7 +1117,7 @@ size_t sew_it
     // Why can't I just have a sew_start() and sew_stop() method instead?
     //
     // Because I can't find an easy way of saving the context of the caller to
-    // sew_start() so it'll be used the first time sew_finish() is called.
+    // sew_start() so it'll be used the first time sew_wait() is called.
     // I don't have a covert_context() function, only a make_context(), which
     // needs a function pointer.
     // -------------------------------------------------------------------------
